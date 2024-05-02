@@ -1,5 +1,6 @@
 package br.com.erudio;
 
+import br.com.erudio.exceptions.UnsupportedMathOperationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,7 @@ public class MathController {
     public Double greeting(@PathVariable(value = "numberOne") String numberOne,
                              @PathVariable(value = "numberTwo") String numberTwo) throws Exception {
         if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new Exception();
+            throw new UnsupportedMathOperationException("Please set numeric value!");
         }
         return converToDouble(numberOne) + converToDouble(numberTwo);
     }
