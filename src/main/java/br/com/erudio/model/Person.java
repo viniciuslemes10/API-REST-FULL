@@ -23,7 +23,7 @@ public class Person implements Serializable {
     @Column(nullable = false, length = 100)
     private String address;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 8)
     private String gender;
 
     public Person() {
