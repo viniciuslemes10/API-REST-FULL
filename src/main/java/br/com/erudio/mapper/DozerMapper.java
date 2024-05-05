@@ -18,9 +18,6 @@ public class DozerMapper {
         for (O o : origin) {
             destinationObjects.add(model.map(o, destination));
         }
-
         return destinationObjects;
-
     }
-
 }
