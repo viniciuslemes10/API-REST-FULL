@@ -15,6 +15,7 @@ public class PersonMapper {
         vo.setFirstName(person.getFirstName());
         vo.setLastName(person.getLastName());
         vo.setBirthday(new Date());
+        vo.setAddress(person.getAddress());
         vo.setGender(person.getGender());
         return vo;
     }
@@ -24,6 +25,7 @@ public class PersonMapper {
         person.setFirstName(vo.getFirstName());
         person.setLastName(vo.getLastName());
         //vo.setBirthday(new Date());
+        person.setAddress(vo.getAddress());
         person.setGender(vo.getGender());
         return person;
     }
