@@ -1,0 +1,16 @@
+[33mdd0f7c9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m HEAD@{0}: commit: Refatorando PersonService e PersonController, implementando VO com DozerMapper e ModelMapper, e realizando testes unitários.
+[33m5e89bb2[m HEAD@{1}: commit: Padrões de projeto VO.
+[33m21df99d[m HEAD@{2}: commit: Arrumando configuração do application.yml removendo os WARN
+[33m4bed86f[m HEAD@{3}: commit: Refatorando controller
+[33md60c146[m HEAD@{4}: commit: Ajustando controller e service para a manipulação do CRUD e persistindo no banco de dados.
+[33me086519[m HEAD@{5}: commit: Configurando entidade e criando repositório de PersonRepository
+[33m0ca2714[m HEAD@{6}: commit: Adicionando dependecias do JPA e do MySQl, configurando conexão do banco de dados.
+[33m503d49c[m HEAD@{7}: commit: Criando CRUD.
+[33mb7cfdf9[m HEAD@{8}: commit: Criando método para buscar todas as pessoas.
+[33m6b2f09d[m HEAD@{9}: commit: Modificando controller, criando classe service e o método findById(), criando o model Person.java
+[33me9322c6[m HEAD@{10}: commit: Refatorando código no Controller e separando as responsabilidades.
+[33m8b65adb[m HEAD@{11}: commit: Realizando operações matemáticas no Controller MathController.java
+[33mfbedd09[m HEAD@{12}: commit: Criando controller para tratar com exceptions.
+[33mba43d89[m HEAD@{13}: commit: Adicionando métodos para executar operações matemáticas e convertendo parâmetros de string para double.
+[33m8e32ce7[m HEAD@{14}: commit: Criando controller e trabalhando com a anotação @PathVariable.
+[33mdd78f5b[m HEAD@{15}: commit (initial): Projeto inicial
