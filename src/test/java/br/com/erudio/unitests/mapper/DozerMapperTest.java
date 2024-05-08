@@ -21,7 +21,7 @@ public class DozerMapperTest {
     @Test
     public void parseEntityToVOTest() {
         PersonVO output = DozerMapper.parseObject(inputObject.mockEntity(), PersonVO.class);
-        assertEquals(Long.valueOf(0L), output.getId());
+        assertEquals(Long.valueOf(0L), output.getKey());
         assertEquals("First Name: 0", output.getFirstName());
         assertEquals("Last Name: 0", output.getLastName());
         assertEquals("Address: 0", output.getAddress());
@@ -33,7 +33,7 @@ public class DozerMapperTest {
         List<PersonVO> outputList = DozerMapper.parseListObject(inputObject.mockEntityList(), PersonVO.class);
         PersonVO personVOZero = outputList.get(0);
 
-        assertEquals(Long.valueOf(0L), personVOZero.getId());
+        assertEquals(Long.valueOf(0L), personVOZero.getKey());
         assertEquals("First Name: 0", personVOZero.getFirstName());
         assertEquals("Last Name: 0", personVOZero.getLastName());
         assertEquals("Address: 0", personVOZero.getAddress());
@@ -41,7 +41,7 @@ public class DozerMapperTest {
 
         PersonVO personVOSeven = outputList.get(7);
 
-        assertEquals(Long.valueOf(7L), personVOSeven.getId());
+        assertEquals(Long.valueOf(7L), personVOSeven.getKey());
         assertEquals("First Name: 7", personVOSeven.getFirstName());
         assertEquals("Last Name: 7", personVOSeven.getLastName());
         assertEquals("Address: 7", personVOSeven.getAddress());
@@ -49,7 +49,7 @@ public class DozerMapperTest {
 
         PersonVO personVOTweLve = outputList.get(12);
 
-        assertEquals(Long.valueOf(12L), personVOTweLve.getId());
+        assertEquals(Long.valueOf(12L), personVOTweLve.getKey());
         assertEquals("First Name: 12", personVOTweLve.getFirstName());
         assertEquals("Last Name: 12", personVOTweLve.getLastName());
         assertEquals("Address: 12", personVOTweLve.getAddress());
