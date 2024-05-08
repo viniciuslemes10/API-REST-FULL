@@ -1,5 +1,6 @@
 package br.com.erudio.junitTest.mockito.service;
 
+import br.com.erudio.data.vo.v1.PersonVO;
 import br.com.erudio.model.Person;
 import br.com.erudio.repositories.PersonRepository;
 import br.com.erudio.services.PersonService;
@@ -38,8 +39,8 @@ class PersonServiceTest {
     }
 
     @Test
-    @DisplayName("Checking that the link is not null and is correct.")
-    void findById() {
+    @DisplayName("Checks that the link is not null and is correct.")
+    void testFindById() {
         Person person = input.mockEntity(1);
         person.setId(1L);
 
@@ -58,18 +59,66 @@ class PersonServiceTest {
     }
 
     @Test
+    @DisplayName("Checks the person creation and whether it contains all the correct information.")
+    void testCreate() {
+        Person entity = input.mockEntity(1);
+        Person persisted = entity;
+        persisted.setId(1L);
+
+        PersonVO vo = input.mockVO(1);
+        vo.setKey(1L);
+
+        when(repository.save(entity)).thenReturn(persisted);
+
+        var result = service.create(vo);
+
+        assertNotNull(result);
+        assertNotNull(result.getKey());
+        assertNotNull(result.getLinks());
+        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
+        assertEquals("First Name: 1", result.getFirstName());
+        assertEquals("Last Name: 1", result.getLastName());
+        assertEquals("Address: 1", result.getAddress());
+        assertEquals("Female", result.getGender());
+    }
+
+    @Test
+    @DisplayName("Checks if the update method has all the correct information.")
+    void testUpdate() {
+        Person entity = input.mockEntity(1);
+        Person persisted = input.mockEntity(1);
+        persisted.setId(1L);
+
+        PersonVO vo = input.mockVO(1);
+        vo.setKey(1L);
+
+        when(repository.findById(1L)).thenReturn(Optional.of(entity));
+        when(repository.save(entity)).thenReturn(persisted);
+
+        var result = service.update(vo);
+        assertNotNull(result);
+        assertNotNull(result.getKey());
+        assertNotNull(result.getLinks());
+        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
+        assertEquals("First Name: 1", result.getFirstName());
+        assertEquals("Last Name: 1", result.getLastName());
+        assertEquals("Address: 1", result.getAddress());
+        assertEquals("Female", result.getGender());
+    }
+
+    @Test
+    @DisplayName("Checks if the person was deleted successfully.")
+    void delete() {
+        Person entity = input.mockEntity(1);
+        entity.setId(1L);
+        when(repository.findById(1L)).thenReturn(Optional.of(entity));
+
+        service.delete(1L);
+    }
+
+    @Test
     void findAll() {
     }
 
-    @Test
-    void create() {
-    }
 
-    @Test
-    void update() {
-    }
-
-    @Test
-    void delete() {
-    }
 }
