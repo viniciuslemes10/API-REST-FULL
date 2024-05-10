@@ -1,4 +1,4 @@
-package br.com.erudio.configuration;
+package br.com.erudio.config;
 
 import br.com.erudio.serialization.convert.YamlJackson2HttpMessageConverter;
 import org.springframework.context.annotation.Configuration;
