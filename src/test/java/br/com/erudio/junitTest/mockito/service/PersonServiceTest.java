@@ -1,6 +1,7 @@
 package br.com.erudio.junitTest.mockito.service;
 
 import br.com.erudio.data.vo.v1.PersonVO;
+import br.com.erudio.exceptions.RequiredObjectIsNotNullException;
 import br.com.erudio.model.Person;
 import br.com.erudio.repositories.PersonRepository;
 import br.com.erudio.services.PersonService;
@@ -83,6 +84,18 @@ class PersonServiceTest {
     }
 
     @Test
+    @DisplayName("Catching exception when data is null in the create method")
+    void testCreateWhenItDataIsNull() {
+        Exception exception = assertThrows(RequiredObjectIsNotNullException.class, () -> {
+            service.create(null);
+        });
+
+        String actualMessage = "It is not allowed to persist a null object";
+        String expectedMessage = exception.getMessage();
+        assertTrue(expectedMessage.contains(actualMessage));
+    }
+
+    @Test
     @DisplayName("Checks if the update method has all the correct information.")
     void testUpdate() {
         Person entity = input.mockEntity(1);
@@ -107,6 +120,17 @@ class PersonServiceTest {
     }
 
     @Test
+    @DisplayName("Catching exception when data is null in the update method")
+    void testUpdateWhenItDataIsNull() {
+        Exception exception = assertThrows(RequiredObjectIsNotNullException.class, () -> {
+            service.update(null);
+        });
+        String actualMessage = "It is not allowed to persist a null object";
+        String expectedMessage = exception.getMessage();
+        assertTrue(expectedMessage.contains(actualMessage));
+    }
+
+    @Test
     @DisplayName("Checks if the person was deleted successfully.")
     void delete() {
         Person entity = input.mockEntity(1);
@@ -118,6 +142,7 @@ class PersonServiceTest {
 
     @Test
     void findAll() {
+
     }
 
 
