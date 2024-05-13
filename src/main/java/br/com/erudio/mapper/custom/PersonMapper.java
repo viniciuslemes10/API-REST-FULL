@@ -1,7 +1,7 @@
 package br.com.erudio.mapper.custom;
 
 import br.com.erudio.data.vo.v2.PersonVOV2;
-import br.com.erudio.model.Person;
+import br.com.erudio.model.person.Person;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

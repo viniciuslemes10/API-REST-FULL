@@ -1,7 +1,7 @@
 package br.com.erudio.unitests.mapper.mocks;
 
 import br.com.erudio.data.vo.v1.PersonVO;
-import br.com.erudio.model.Person;
+import br.com.erudio.model.person.Person;
 
 import java.util.ArrayList;
 import java.util.List;

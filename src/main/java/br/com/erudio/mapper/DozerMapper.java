@@ -1,7 +1,9 @@
 package br.com.erudio.mapper;
 
+import br.com.erudio.data.vo.v1.BooksVO;
 import br.com.erudio.data.vo.v1.PersonVO;
-import br.com.erudio.model.Person;
+import br.com.erudio.model.books.Books;
+import br.com.erudio.model.person.Person;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
@@ -20,6 +22,14 @@ public class DozerMapper {
                 PersonVO.class,
                 Person.class
         ).addMapping(PersonVO::getKey, Person::setId);
+        mapper.createTypeMap(
+                Books.class,
+                BooksVO.class)
+                .addMapping(Books::getId, BooksVO::setKey);
+        mapper.createTypeMap(
+                BooksVO.class,
+                Books.class)
+                .addMapping(BooksVO::getKey, Books::setId);
     }
 
     public static <O, D> D parseObject(O origin, Class<D> destination) {

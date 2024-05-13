@@ -2,9 +2,9 @@ package br.com.erudio.junitTest.mockito.service;
 
 import br.com.erudio.data.vo.v1.PersonVO;
 import br.com.erudio.exceptions.RequiredObjectIsNotNullException;
-import br.com.erudio.model.Person;
-import br.com.erudio.repositories.PersonRepository;
-import br.com.erudio.services.PersonService;
+import br.com.erudio.model.person.Person;
+import br.com.erudio.repositories.person.PersonRepository;
+import br.com.erudio.services.person.PersonService;
 import br.com.erudio.unitests.mapper.mocks.PersonMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
