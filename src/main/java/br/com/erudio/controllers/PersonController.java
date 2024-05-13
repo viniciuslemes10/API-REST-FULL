@@ -33,7 +33,7 @@ public class PersonController {
                                         mediaType = "application/json",
                                         array = @ArraySchema(schema = @Schema(implementation = PersonVO.class))
                                 )),
-                            @ApiResponse(description = "BAS REQUEST", responseCode = "400", content = @Content),
+                            @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                             @ApiResponse(description = "Not Unauthorized", responseCode = "401", content = @Content),
                             @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
