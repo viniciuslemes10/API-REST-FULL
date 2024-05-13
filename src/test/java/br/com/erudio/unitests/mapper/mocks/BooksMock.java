@@ -3,6 +3,8 @@ package br.com.erudio.unitests.mapper.mocks;
 import br.com.erudio.data.vo.v1.BooksVO;
 import br.com.erudio.model.books.Books;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +39,9 @@ public class BooksMock {
         books.setId(number.longValue());
         books.setAuthor("Author: " + number);
         books.setTitle("Title: " + number);
-        books.setLaunchDate(new Date());
+        LocalDate dateFixed = LocalDate.of(2000, 10, 11);
+        Date date = Date.from(dateFixed.atStartOfDay().toInstant(ZoneOffset.UTC));
+        books.setLaunchDate(date);
         books.setPrice(number.doubleValue());
         return books;
     }
@@ -48,7 +52,9 @@ public class BooksMock {
         booksVO.setKey(number.longValue());
         booksVO.setAuthor("Author: " + number);
         booksVO.setTitle("Title: " + number);
-        booksVO.setLaunchDate(new Date());
+        LocalDate dateFixed = LocalDate.of(2000, 10, 11);
+        Date date = Date.from(dateFixed.atStartOfDay().toInstant(ZoneOffset.UTC));
+        booksVO.setLaunchDate(date);
         booksVO.setPrice(number.doubleValue());
         return booksVO;
     }
