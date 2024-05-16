@@ -9,13 +9,15 @@ public class PersonVO implements Serializable {
     private static final long serialVersionUID = 1;
 
     private Long id;
-
     @JsonProperty("first_name")
     private String firstName;
-
     @JsonProperty("last_name")
     private String lastName;
     private String address;
+    private String gender;
+
+
+    public PersonVO() {}
 
     @Override
     public boolean equals(Object o) {
@@ -29,6 +31,17 @@ public class PersonVO implements Serializable {
         return Objects.hash(id, firstName, lastName, address, gender);
     }
 
+    @Override
+    public String toString() {
+        return "PersonVO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }
@@ -36,11 +49,6 @@ public class PersonVO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    private String gender;
-
-    public PersonVO() {}
-
 
     public String getFirstName() {
         return firstName;
