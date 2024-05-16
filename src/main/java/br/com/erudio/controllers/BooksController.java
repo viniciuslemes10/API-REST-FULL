@@ -76,7 +76,6 @@ public class BooksController {
         return service.findAll();
     }
 
-
     @PutMapping(consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
                 produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Update a Book", description = "Update a Book by passing a JSON, XML or YAML representation odf the book",
