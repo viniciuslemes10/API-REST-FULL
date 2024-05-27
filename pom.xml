@@ -19,6 +19,7 @@
 		<model-mapper.version>3.2.0</model-mapper.version>
 		<spring-doc.version>2.5.0</spring-doc.version>
 		<rest-assured.version>4.5.0</rest-assured.version>
+		<java-jwt.version>3.18.3</java-jwt.version>
 		<testcontainers.version>1.16.3</testcontainers.version>
 	</properties>
 	<dependencies>
@@ -29,6 +30,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.hateoas</groupId>
