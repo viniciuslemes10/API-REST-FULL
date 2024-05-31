@@ -36,25 +36,34 @@ public class AuthServices {
             var username = data.getUsername();
             var password = data.getPassword();
 
-            // Busca pelo usuário no banco de dados
             User user = userRepository.findByUsername(username);
 
             if (user == null) {
                 throw new UsernameNotFoundException("User not found with username: " + username);
             }
 
-            // Autentica o usuário
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-            // Gera o token de acesso
             TokenVO tokenResponse = tokenProvider.createAccessToken(username, user.getRoles());
 
             logger.info("User authenticated successfully: " + username);
 
             return ResponseEntity.ok(tokenResponse);
         } catch (BadCredentialsException e) {
-            logger.warning("Invalid username/password supplied for user: " + data.getUsername());
             throw new BadCredentialsException("Invalid username/password supplied!");
         }
+    }
+
+    @SuppressWarnings("rawtypes")
+    public ResponseEntity refreshToken(String username, String refreshToken) {
+        User user = userRepository.findByUsername(username);
+
+        var tokenResponse = new TokenVO();
+        if(user != null) {
+            tokenResponse = tokenProvider.refreshToken(refreshToken);
+        } else {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return ResponseEntity.ok(tokenResponse);
     }
 }

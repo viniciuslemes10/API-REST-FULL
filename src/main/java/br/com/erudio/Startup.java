@@ -25,8 +25,10 @@ public class Startup {
 		passwordEncoder.setDefaultPasswordEncoderForMatches(pbkdf2PasswordEncoder);
 		String result = passwordEncoder.encode("admin123");
 		String result2 = passwordEncoder.encode("admin234");
+		String result3 = passwordEncoder.encode("lemes");
 		System.out.println("My hash: " + result);
 		System.out.println("My hash: " + result2);
+		System.out.println("My hash: " + result3);
 	}
 
 }
