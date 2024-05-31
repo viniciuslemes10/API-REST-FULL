@@ -6,20 +6,20 @@ import java.util.Objects;
 public class AccountCredentialsVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String userName;
+    private String username;
     private String password;
 
     public AccountCredentialsVO(String userName, String password) {
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -34,11 +34,11 @@ public class AccountCredentialsVO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AccountCredentialsVO that)) return false;
-        return Objects.equals(userName, that.userName) && Objects.equals(password, that.password);
+        return Objects.equals(username, that.username) && Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userName, password);
+        return Objects.hash(username, password);
     }
 }

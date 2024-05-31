@@ -23,16 +23,15 @@ public class AuthController {
     @Operation(summary = "Authenticates a user and returns a token")
     @PostMapping(value = "/signin")
     public ResponseEntity signin(@RequestBody AccountCredentialsVO data) {
-        if(checkIfParamsIsNotNull(data))
+        if (checkIfParamsIsNotNull(data))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
         var token = authServices.signin(data);
-        if(token == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
         return token;
     }
 
     private boolean checkIfParamsIsNotNull(AccountCredentialsVO data) {
-        return data == null || data.getUserName() == null || data.getUserName().isBlank()
+        return data == null || data.getUsername() == null || data.getUsername().isBlank()
                 || data.getPassword() == null || data.getPassword().isBlank();
     }
 }

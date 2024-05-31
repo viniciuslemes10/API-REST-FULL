@@ -2,6 +2,7 @@ package br.com.erudio.services;
 
 import br.com.erudio.data.vo.v1.AccountCredentialsVO;
 import br.com.erudio.data.vo.v1.TokenVO;
+import br.com.erudio.model.User;
 import br.com.erudio.repositories.UserRepository;
 import br.com.erudio.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.logging.Logger;
+
 @Service
 public class AuthServices {
+    private Logger logger = Logger.getLogger(AuthServices.class.getName());
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -21,26 +26,34 @@ public class AuthServices {
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     @SuppressWarnings("rawtypes")
     public ResponseEntity signin(AccountCredentialsVO data) {
         try {
-            var username = data.getUserName();
+            logger.info("Authenticating user: " + data.getUsername());
+
+            var username = data.getUsername();
             var password = data.getPassword();
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
 
-            var user = repository.findByUsername(username);
-            var tokenResponse = new TokenVO();
+            // Busca pelo usuário no banco de dados
+            User user = userRepository.findByUsername(username);
 
-            if(user != null) {
-                tokenResponse = tokenProvider.createAccessToken(username, user.getRoles());
-            } else {
-                throw new UsernameNotFoundException("Username " + username + " not found!");
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found with username: " + username);
             }
+
+            // Autentica o usuário
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+            // Gera o token de acesso
+            TokenVO tokenResponse = tokenProvider.createAccessToken(username, user.getRoles());
+
+            logger.info("User authenticated successfully: " + username);
+
             return ResponseEntity.ok(tokenResponse);
-        } catch (Exception exception) {
+        } catch (BadCredentialsException e) {
+            logger.warning("Invalid username/password supplied for user: " + data.getUsername());
             throw new BadCredentialsException("Invalid username/password supplied!");
         }
     }
