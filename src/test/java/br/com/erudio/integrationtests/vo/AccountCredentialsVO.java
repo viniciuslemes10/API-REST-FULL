@@ -1,8 +1,12 @@
 package br.com.erudio.integrationtests.vo;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@XmlRootElement
 public class AccountCredentialsVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -14,6 +18,9 @@ public class AccountCredentialsVO implements Serializable {
         this.password = password;
     }
 
+    public AccountCredentialsVO() {}
+
+    @XmlElement
     public String getUsername() {
         return username;
     }
@@ -22,6 +29,7 @@ public class AccountCredentialsVO implements Serializable {
         this.username = username;
     }
 
+    @XmlElement
     public String getPassword() {
         return password;
     }
