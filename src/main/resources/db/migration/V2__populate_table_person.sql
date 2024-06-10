@@ -1,5 +1,5 @@
 INSERT INTO `person` VALUES
-(1,'São Paulo - São Paulo - Brasil','Vinicius','Male','Lemes'),
-(3,'Bragança - São Paulo - Brasil','Lucas','Male','Souza'),
-(4,'São Paulo - São Paulo - Brasil','Leticia','Famele','Alcante'),
-(7,'São Caetano - São Paulo','Carlos','Male','Souza');
+(1,'Vinicius','Lemes', 'São Paulo - São Paulo - Brasil', 'Male'),
+(3,'Lucas','Souza', 'Bragança - São Paulo - Brasil', 'Male'),
+(4,'Leticia','Alcante', 'São Paulo - São Paulo - Brasil', 'Famale'),
+(7,'Carlos','Souza', 'São Caetano - São Paulo', 'Male');
