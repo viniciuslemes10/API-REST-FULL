@@ -228,6 +228,25 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertEquals("Male", foundPersonSeven.getGender());
     }
 
+    @Test
+    @Order(6)
+    public void testFindAllWithoutToken() throws JsonProcessingException, JsonProcessingException {
+
+        RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
+                .setBasePath("/api/person/v1")
+                .setPort(TestConfigs.SERVER_PORT)
+                    .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                    .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+
+        given().spec(specificationWithoutToken)
+                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                    .when()
+                    .get()
+                .then()
+                    .statusCode(403);
+    }
+
     private void mockPerson() {
         person.setId(1L);
         person.setFirstName("Richard");
