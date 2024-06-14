@@ -1,4 +1,4 @@
-package br.com.erudio.integrationtests.controllers.books.json;
+package br.com.erudio.integrationtests.controllers.books.xml;
 
 import br.com.erudio.configs.TestConfigs;
 import br.com.erudio.integrationtests.AbstractIntegrationTest;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -27,15 +27,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class BookControllerJsonTest extends AbstractIntegrationTest {
+public class BookControllerXMLTest extends AbstractIntegrationTest {
     private static RequestSpecification specification;
-    private static ObjectMapper objectMapper;
+    private static XmlMapper objectMapper;
 
     private static BooksVO books;
 
     @BeforeAll
     public static void setup() {
-        objectMapper = new ObjectMapper();
+        objectMapper = new XmlMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         books = new BooksVO();
@@ -50,7 +50,8 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
         var accessToken = given()
                 .basePath("/auth/signin")
                 .port(TestConfigs.SERVER_PORT)
-                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .contentType(TestConfigs.CONTENT_TYPE_XML)
+                .accept(TestConfigs.CONTENT_TYPE_XML)
                 .body(user)
                 .when()
                 .post()
@@ -76,7 +77,8 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
         mockBooks();
 
         var content = given().spec(specification)
-                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .contentType(TestConfigs.CONTENT_TYPE_XML)
+                .accept(TestConfigs.CONTENT_TYPE_XML)
                 .body(books)
                 .when()
                 .post()
@@ -110,7 +112,8 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
         books.setPrice(90.00);
 
         var content = given().spec(specification)
-                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .contentType(TestConfigs.CONTENT_TYPE_XML)
+                .accept(TestConfigs.CONTENT_TYPE_XML)
                 .body(books)
                 .when()
                 .put()
@@ -144,7 +147,8 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
         mockBooks();
 
         var content = given().spec(specification)
-                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .contentType(TestConfigs.CONTENT_TYPE_XML)
+                .accept(TestConfigs.CONTENT_TYPE_XML)
                 .pathParam("id", books.getId())
                 .when()
                 .get("{id}")
@@ -177,7 +181,8 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
     public void testDelete() throws JsonMappingException, JsonProcessingException {
 
         given().spec(specification)
-                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .contentType(TestConfigs.CONTENT_TYPE_XML)
+                .accept(TestConfigs.CONTENT_TYPE_XML)
                 .pathParam("id", books.getId())
                 .when()
                 .delete("{id}")
@@ -189,7 +194,8 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
     @Order(5)
     public void testFindAll() throws JsonProcessingException, JsonProcessingException {
         var content = given().spec(specification)
-                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .contentType(TestConfigs.CONTENT_TYPE_XML)
+                .accept(TestConfigs.CONTENT_TYPE_XML)
                     .when()
                     .get()
                 .then()
@@ -241,7 +247,8 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
                 .build();
 
         given().spec(specificationWithoutToken)
-                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .contentType(TestConfigs.CONTENT_TYPE_XML)
+                .accept(TestConfigs.CONTENT_TYPE_XML)
                 .when()
                 .get()
                 .then()

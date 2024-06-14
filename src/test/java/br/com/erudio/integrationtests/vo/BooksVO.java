@@ -1,19 +1,16 @@
 package br.com.erudio.integrationtests.vo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.springframework.hateoas.RepresentationModel;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-@JsonPropertyOrder({"id", "author", "launchDate", "price","title"})
-public class BooksVO extends RepresentationModel<BooksVO> implements Serializable {
+@XmlRootElement
+public class BooksVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty("id")
-    private Long key;
+    private Long id;
 
     private String author;
 
@@ -29,20 +26,20 @@ public class BooksVO extends RepresentationModel<BooksVO> implements Serializabl
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BooksVO booksVO)) return false;
-        return Objects.equals(key, booksVO.key) && Objects.equals(author, booksVO.author) && Objects.equals(launchDate, booksVO.launchDate) && Objects.equals(price, booksVO.price) && Objects.equals(title, booksVO.title);
+        return Objects.equals(id, booksVO.id) && Objects.equals(author, booksVO.author) && Objects.equals(launchDate, booksVO.launchDate) && Objects.equals(price, booksVO.price) && Objects.equals(title, booksVO.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, author, launchDate, price, title);
+        return Objects.hash(id, author, launchDate, price, title);
     }
 
-    public Long getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
-    public void setKey(Long key) {
-        this.key = key;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAuthor() {

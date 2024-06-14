@@ -1,7 +1,5 @@
 package br.com.erudio.integrationtests.vo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serializable;
