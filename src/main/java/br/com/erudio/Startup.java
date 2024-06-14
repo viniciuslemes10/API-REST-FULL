@@ -12,7 +12,6 @@ import java.util.Map;
 @SpringBootApplication
 public class Startup {
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(Startup.class, args);
 		Map<String, PasswordEncoder> encoders = new HashMap<>();
