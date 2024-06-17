@@ -13,6 +13,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.util.logging.Logger;
@@ -30,7 +34,10 @@ public class PersonService {
     @Autowired
     private PersonMapper mapper;
 
-    public Page<PersonVO> findAll(Pageable pageable) {
+    @Autowired
+    private PagedResourcesAssembler<PersonVO> assembler;
+
+    public PagedModel<EntityModel<PersonVO>> findAll(Pageable pageable) {
         logger.info("Finding all people");
         var personPage = repository.findAll(pageable);
         var personVosPage = personPage.map(p -> DozerMapper.parseObject(p, PersonVO.class));
@@ -39,8 +46,14 @@ public class PersonService {
                         linkTo(methodOn(PersonController.class)
                                 .findById(p.getKey())).withSelfRel()));
 
+        Link link = linkTo(methodOn(PersonController.class)
+                .findAll(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize(),
+                        "asc"
+                        )).withSelfRel();
 
-        return personVosPage;
+        return assembler.toModel(personVosPage, link);
     }
 
     public PersonVO findById(Long id) {
