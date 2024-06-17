@@ -11,12 +11,14 @@ import br.com.erudio.model.person.Person;
 import br.com.erudio.repositories.person.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.logging.Logger;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class PersonService {
@@ -28,14 +30,17 @@ public class PersonService {
     @Autowired
     private PersonMapper mapper;
 
-    public List<PersonVO> findAll() {
+    public Page<PersonVO> findAll(Pageable pageable) {
         logger.info("Finding all people");
+        var personPage = repository.findAll(pageable);
+        var personVosPage = personPage.map(p -> DozerMapper.parseObject(p, PersonVO.class));
+        personVosPage.map(
+                p -> p.add(
+                        linkTo(methodOn(PersonController.class)
+                                .findById(p.getKey())).withSelfRel()));
 
-        var persons = DozerMapper.parseListObject(repository.findAll(), PersonVO.class);
-        persons.stream()
-                .forEach(p -> p.add(linkTo(methodOn(PersonController.class)
-                        .findById(p.getKey())).withSelfRel()));
-        return persons;
+
+        return personVosPage;
     }
 
     public PersonVO findById(Long id) {

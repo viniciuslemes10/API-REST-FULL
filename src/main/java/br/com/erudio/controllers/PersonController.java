@@ -11,11 +11,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/api/person/v1")
 @RestController
@@ -39,8 +41,14 @@ public class PersonController {
                             @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
                     }
     )
-    public List<PersonVO> findAll() {
-        return personService.findAll();
+    public ResponseEntity<Page<PersonVO>> findAll(
+            @RequestParam(value = "size", defaultValue = "0") Integer size,
+            @RequestParam(value = "limit", defaultValue = "12") Integer limit,
+            @RequestParam(value = "direction", defaultValue = "12") String direction
+    ) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(size, limit, Sort.by(sortDirection, "firstName"));
+        return ResponseEntity.ok(personService.findAll(pageable));
     }
 
     @CrossOrigin(origins = {"http://localhost:8080", "https://erudio.com.br"})
