@@ -1,4 +1,4 @@
 INSERT INTO `users` (`user_name`, `full_name`, `password`, `account_non_expired`, `account_non_locked`, `credentials_non_expired`, `enabled`) VALUES
-('leandro', 'Leandro Costa', '1793d16bfd8bd9d0ef19bcc418662357720f3f8d50c455b9999b4fca2c2e5eedb1a372192269d43e', b'1', b'1', b'1', b'1'),
-('flavio', 'Flavio Costa', 'be47fa98f43a79f5dd84dd7f1f7c5c486f94089b0cf37413ba3e63ba3bdae353c9e1f8b147ca2777', b'1', b'1', b'1', b'1'),
-('Vinicius', 'Vinicius Lemes', '55b6d3822470e7c34f53157eb6a97ed598f9747257f313c573262b31d98b54207e18dd64aebd8fe1', b'1', b'1', b'1', b'1');
+('leandro', 'Leandro Costa', 'b11eda88181cf959e3a9dcb3960d7dfac173e62bb672fce04a62a80020b38159ec03d044c182a3ba', b'1', b'1', b'1', b'1'),
+('flavio', 'Flavio Costa', 'd5896ba38ce383329735815aca104b49699f48f61f38fb7d2613e5614438796bf7c0ba0707ba9e13', b'1', b'1', b'1', b'1'),
+('Vinicius', 'Vinicius Lemes', '2baf420bd8a151933d84dd370d4827e61423f6ffb3880a8c7853c32410855d37603a30301b65a503', b'1', b'1', b'1', b'1');

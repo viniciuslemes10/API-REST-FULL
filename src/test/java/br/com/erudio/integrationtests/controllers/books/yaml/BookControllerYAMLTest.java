@@ -6,6 +6,7 @@ import br.com.erudio.integrationtests.controllers.withyaml.mapper.YamlMapper;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.BooksVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelBooksVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -222,7 +223,7 @@ public class BookControllerYAMLTest extends AbstractIntegrationTest {
     @Test
     @Order(5)
     public void testFindAll() throws JsonProcessingException, JsonProcessingException {
-        var content = given().spec(specification)
+        var paged = given().spec(specification)
                 .config(
                 RestAssuredConfig
                         .config()
@@ -232,6 +233,7 @@ public class BookControllerYAMLTest extends AbstractIntegrationTest {
                 )
                 .contentType(TestConfigs.CONTENT_TYPE_YML)
                 .accept(TestConfigs.CONTENT_TYPE_YML)
+                .queryParams("page", 0, "size", 10, "direction", "asc")
                     .when()
                     .get()
                 .then()
@@ -239,11 +241,13 @@ public class BookControllerYAMLTest extends AbstractIntegrationTest {
                         .extract()
                         .body()
                             //.as(new TypeRef<List<PersonVO>>() {});
-                            .as(BooksVO[].class, objectMapper);
+                            .as(PagedModelBooksVO.class, objectMapper);
 
-        List<BooksVO> persistedBooks = Arrays.asList(content);
-        BooksVO foundBookOne = persistedBooks.get(0);
-        assertEquals(1,foundBookOne.getId());
+
+        var books = paged.getContent();
+
+        BooksVO foundBookOne = books.get(1);
+        assertEquals(9,foundBookOne.getId());
 
         assertNotNull(foundBookOne);
         assertNotNull(foundBookOne.getId());
@@ -252,12 +256,12 @@ public class BookControllerYAMLTest extends AbstractIntegrationTest {
         assertNotNull(foundBookOne.getPrice());
         assertNotNull(foundBookOne.getTitle());
 
-        assertEquals("Michael C. Feathers", foundBookOne.getAuthor());
-        assertEquals(49.00, foundBookOne.getPrice());
-        assertEquals("Working effectively with legacy code", foundBookOne.getTitle());
+        assertEquals("Brian Goetz e Tim Peierls", foundBookOne.getAuthor());
+        assertEquals(80.00, foundBookOne.getPrice());
+        assertEquals("Java Concurrency in Practice", foundBookOne.getTitle());
 
-        BooksVO foundBooksFour = persistedBooks.get(3);
-        assertEquals(4, foundBooksFour.getId());
+        BooksVO foundBooksFour = books.get(3);
+        assertEquals(8, foundBooksFour.getId());
 
         assertNotNull(foundBooksFour);
         assertNotNull(foundBooksFour.getId());
@@ -266,9 +270,9 @@ public class BookControllerYAMLTest extends AbstractIntegrationTest {
         assertNotNull(foundBooksFour.getPrice());
         assertNotNull(foundBooksFour.getTitle());
 
-        assertEquals("Crockford", foundBooksFour.getAuthor());
-        assertEquals(67.00, foundBooksFour.getPrice());
-        assertEquals("JavaScript", foundBooksFour.getTitle());
+        assertEquals("Eric Evans", foundBooksFour.getAuthor());
+        assertEquals(92.00, foundBooksFour.getPrice());
+        assertEquals("Domain Driven Design", foundBooksFour.getTitle());
     }
 
     @Test

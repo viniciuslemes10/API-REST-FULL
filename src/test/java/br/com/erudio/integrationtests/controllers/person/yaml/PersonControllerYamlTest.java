@@ -6,6 +6,8 @@ import br.com.erudio.integrationtests.controllers.withyaml.mapper.YamlMapper;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.PersonVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.vo.pagedmodels.PagedModelPerson;
+import br.com.erudio.integrationtests.wrappers.WrapperPersonVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.restassured.builder.RequestSpecBuilder;
@@ -18,9 +20,6 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -272,7 +271,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
     @Test
     @Order(6)
     public void testFindAll() throws JsonProcessingException {
-        var content = given().spec(specification)
+        var wrapper = given().spec(specification)
                 .config(
                         RestAssuredConfig
                                 .config()
@@ -282,6 +281,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .contentType(TestConfigs.CONTENT_TYPE_YML)
                 .accept(TestConfigs.CONTENT_TYPE_YML)
+                .queryParams("page", 3, "size", 10, "direction", "asc")
                 .when()
                 .get()
                 .then()
@@ -289,11 +289,11 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
                 .extract()
                 .body()
                 //.as(new TypeRef<List<PersonVO>>() {});
-                .as(PersonVO[].class, objectMapper);
+                .as(PagedModelPerson.class, objectMapper);
 
-        List<PersonVO> persistedPerson = Arrays.asList(content);
-        PersonVO foundPersonOne = persistedPerson.get(1);
-        assertEquals(3,foundPersonOne.getId());
+        var people = wrapper.getContent();
+        PersonVO foundPersonOne = people.get(1);
+        assertEquals(411,foundPersonOne.getId());
 
         assertNotNull(foundPersonOne);
         assertNotNull(foundPersonOne.getId());
@@ -302,13 +302,13 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
         assertNotNull(foundPersonOne.getLastName());
         assertNotNull(foundPersonOne.getGender());
 
-        assertEquals("Lucas", foundPersonOne.getFirstName());
-        assertEquals("Souza", foundPersonOne.getLastName());
-        assertEquals("Bragança - São Paulo - Brasil", foundPersonOne.getAddress());
-        assertEquals("Male", foundPersonOne.getGender());
+        assertEquals("Alie", foundPersonOne.getFirstName());
+        assertEquals("Yeld", foundPersonOne.getLastName());
+        assertEquals("42 Messerschmidt Crossing", foundPersonOne.getAddress());
+        assertEquals("Female", foundPersonOne.getGender());
 
-        PersonVO foundPersonSeven = persistedPerson.get(3);
-        assertEquals(7, foundPersonSeven.getId());
+        PersonVO foundPersonSeven = people.get(3);
+        assertEquals(406, foundPersonSeven.getId());
 
         assertNotNull(foundPersonSeven);
         assertNotNull(foundPersonSeven.getId());
@@ -317,9 +317,9 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
         assertNotNull(foundPersonSeven.getLastName());
         assertNotNull(foundPersonSeven.getGender());
 
-        assertEquals("Carlos", foundPersonSeven.getFirstName());
-        assertEquals("Souza", foundPersonSeven.getLastName());
-        assertEquals("São Caetano - São Paulo", foundPersonSeven.getAddress());
+        assertEquals("Alister", foundPersonSeven.getFirstName());
+        assertEquals("Etheridge", foundPersonSeven.getLastName());
+        assertEquals("333 Lakewood Gardens Street", foundPersonSeven.getAddress());
         assertEquals("Male", foundPersonSeven.getGender());
     }
 

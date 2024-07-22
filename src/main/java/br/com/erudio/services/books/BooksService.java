@@ -8,9 +8,12 @@ import br.com.erudio.mapper.DozerMapper;
 import br.com.erudio.model.books.Books;
 import br.com.erudio.repositories.books.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -19,6 +22,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class BooksService {
     @Autowired
     private BooksRepository repository;
+
+    @Autowired
+    private PagedResourcesAssembler<BooksVO> assembler;
 
     public BooksVO created(BooksVO vo) {
         var entity = DozerMapper.parseObject(vo, Books.class);
@@ -36,10 +42,20 @@ public class BooksService {
         return vo;
     }
 
-    public List<BooksVO> findAll() {
-        var listVO = DozerMapper.parseListObject(repository.findAll(), BooksVO.class);
-        listVO.stream().forEach(b -> b.add(linkTo(methodOn(BooksController.class).findById(b.getKey())).withSelfRel()));
-        return listVO;
+    public PagedModel<EntityModel<BooksVO>> findAll(Pageable pageable) {
+        var booksPage = repository.findAll(pageable);
+        var booksVOPage = booksPage.map(b -> DozerMapper.parseObject(b, BooksVO.class));
+        booksVOPage.map(b -> b
+                .add(linkTo(methodOn(BooksController.class)
+                        .findById(b.getKey()))
+                        .withSelfRel()));
+
+        Link link = linkTo(methodOn(BooksController.class).findAll(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                "asc")).withSelfRel();
+
+        return assembler.toModel(booksVOPage, link);
     }
 
     public BooksVO update(BooksVO vo) {

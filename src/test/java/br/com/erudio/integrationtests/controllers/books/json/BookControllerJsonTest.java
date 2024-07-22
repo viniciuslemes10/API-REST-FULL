@@ -5,8 +5,8 @@ import br.com.erudio.integrationtests.AbstractIntegrationTest;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.BooksVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.wrappers.WrapperBooksVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -190,6 +189,7 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
     public void testFindAll() throws JsonProcessingException, JsonProcessingException {
         var content = given().spec(specification)
                 .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .queryParams("page", 0, "size", 10, "direction", "asc")
                     .when()
                     .get()
                 .then()
@@ -199,9 +199,11 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
                             //.as(new TypeRef<List<PersonVO>>() {});
                             .asString();
 
-        List<BooksVO> persistedBooks = objectMapper.readValue(content, new TypeReference<List<BooksVO>>() {});
-        BooksVO foundBookOne = persistedBooks.get(0);
-        assertEquals(1,foundBookOne.getId());
+        WrapperBooksVO persistedBooks = objectMapper.readValue(content, WrapperBooksVO.class);
+        var books = persistedBooks.getEmbeddedBooks().getBooksVOS();
+
+        BooksVO foundBookOne = books.get(1);
+        assertEquals(9,foundBookOne.getId());
 
         assertNotNull(foundBookOne);
         assertNotNull(foundBookOne.getId());
@@ -210,12 +212,12 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(foundBookOne.getPrice());
         assertNotNull(foundBookOne.getTitle());
 
-        assertEquals("Michael C. Feathers", foundBookOne.getAuthor());
-        assertEquals(49.00, foundBookOne.getPrice());
-        assertEquals("Working effectively with legacy code", foundBookOne.getTitle());
+        assertEquals("Brian Goetz e Tim Peierls", foundBookOne.getAuthor());
+        assertEquals(80.00, foundBookOne.getPrice());
+        assertEquals("Java Concurrency in Practice", foundBookOne.getTitle());
 
-        BooksVO foundBooksFour = persistedBooks.get(3);
-        assertEquals(4, foundBooksFour.getId());
+        BooksVO foundBooksFour = books.get(3);
+        assertEquals(8, foundBooksFour.getId());
 
         assertNotNull(foundBooksFour);
         assertNotNull(foundBooksFour.getId());
@@ -224,9 +226,9 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(foundBooksFour.getPrice());
         assertNotNull(foundBooksFour.getTitle());
 
-        assertEquals("Crockford", foundBooksFour.getAuthor());
-        assertEquals(67.00, foundBooksFour.getPrice());
-        assertEquals("JavaScript", foundBooksFour.getTitle());
+        assertEquals("Eric Evans", foundBooksFour.getAuthor());
+        assertEquals(92.00, foundBooksFour.getPrice());
+        assertEquals("Domain Driven Design", foundBooksFour.getTitle());
     }
 
     @Test

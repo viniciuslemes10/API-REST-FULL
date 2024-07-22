@@ -5,8 +5,8 @@ import br.com.erudio.integrationtests.AbstractIntegrationTest;
 import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
 import br.com.erudio.integrationtests.vo.PersonVO;
 import br.com.erudio.integrationtests.vo.TokenVO;
+import br.com.erudio.integrationtests.wrappers.WrapperPersonVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,14 +15,11 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
-    import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -230,6 +227,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
     public void testFindAll() throws JsonProcessingException, JsonProcessingException {
         var content = given().spec(specification)
                 .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .queryParams("page", 3, "size", 10, "direction", "asc")
                     .when()
                     .get()
                 .then()
@@ -239,9 +237,10 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
                             //.as(new TypeRef<List<PersonVO>>() {});
                             .asString();
 
-        List<PersonVO> persistedPerson = objectMapper.readValue(content, new TypeReference<List<PersonVO>>() {});
-        PersonVO foundPersonOne = persistedPerson.get(1);
-        assertEquals(3,foundPersonOne.getId());
+        WrapperPersonVO wrapper = objectMapper.readValue(content, WrapperPersonVO.class);
+        var people = wrapper.getEmbedded().getPersons();
+        PersonVO foundPersonOne = people.get(1);
+        assertEquals(411,foundPersonOne.getId());
 
         assertNotNull(foundPersonOne);
         assertNotNull(foundPersonOne.getId());
@@ -250,13 +249,13 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(foundPersonOne.getLastName());
         assertNotNull(foundPersonOne.getGender());
 
-        assertEquals("Lucas", foundPersonOne.getFirstName());
-        assertEquals("Souza", foundPersonOne.getLastName());
-        assertEquals("Bragança - São Paulo - Brasil", foundPersonOne.getAddress());
-        assertEquals("Male", foundPersonOne.getGender());
+        assertEquals("Alie", foundPersonOne.getFirstName());
+        assertEquals("Yeld", foundPersonOne.getLastName());
+        assertEquals("42 Messerschmidt Crossing", foundPersonOne.getAddress());
+        assertEquals("Female", foundPersonOne.getGender());
 
-        PersonVO foundPersonSeven = persistedPerson.get(3);
-        assertEquals(7, foundPersonSeven.getId());
+        PersonVO foundPersonSeven = people.get(3);
+        assertEquals(406, foundPersonSeven.getId());
 
         assertNotNull(foundPersonSeven);
         assertNotNull(foundPersonSeven.getId());
@@ -265,9 +264,9 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
         assertNotNull(foundPersonSeven.getLastName());
         assertNotNull(foundPersonSeven.getGender());
 
-        assertEquals("Carlos", foundPersonSeven.getFirstName());
-        assertEquals("Souza", foundPersonSeven.getLastName());
-        assertEquals("São Caetano - São Paulo", foundPersonSeven.getAddress());
+        assertEquals("Alister", foundPersonSeven.getFirstName());
+        assertEquals("Etheridge", foundPersonSeven.getLastName());
+        assertEquals("333 Lakewood Gardens Street", foundPersonSeven.getAddress());
         assertEquals("Male", foundPersonSeven.getGender());
     }
 

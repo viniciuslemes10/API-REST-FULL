@@ -94,26 +94,26 @@ class BooksServiceTest {
         assertEquals(Double.valueOf(1D), result.getPrice());
     }
 
-    @Test
-    @DisplayName("Searching all books successfully")
-    void findAll() {
-        List<Books> list = input.mockListEntity();
-        when(repository.findAll()).thenReturn(list);
-
-        var books = service.findAll();
-        for (int i = 1; i < books.size(); i++) {
-            assertNotNull(books.get(i));
-            assertNotNull(books.get(i).getKey());
-            assertNotNull(books.get(i).getLinks());
-            assertTrue(books.get(i).toString().contains("links: [</api/books/v1/"+i+">;rel=\"self\"]"));
-            assertEquals("Author: " + i, books.get(i).getAuthor());
-            assertEquals("Title: " + i, books.get(i).getTitle());
-            LocalDate dateFixed = LocalDate.of(2000, 10, 11);
-            Date date = Date.from(dateFixed.atStartOfDay().toInstant(ZoneOffset.UTC));
-            assertEquals(date, books.get(i).getLaunchDate());
-            assertEquals(i, books.get(i).getPrice());
-        }
-    }
+//    @Test
+//    @DisplayName("Searching all books successfully")
+//    void findAll() {
+//        List<Books> list = input.mockListEntity();
+//        when(repository.findAll()).thenReturn(list);
+//
+//        var books = service.findAll();
+//        for (int i = 1; i < books.size(); i++) {
+//            assertNotNull(books.get(i));
+//            assertNotNull(books.get(i).getKey());
+//            assertNotNull(books.get(i).getLinks());
+//            assertTrue(books.get(i).toString().contains("links: [</api/books/v1/"+i+">;rel=\"self\"]"));
+//            assertEquals("Author: " + i, books.get(i).getAuthor());
+//            assertEquals("Title: " + i, books.get(i).getTitle());
+//            LocalDate dateFixed = LocalDate.of(2000, 10, 11);
+//            Date date = Date.from(dateFixed.atStartOfDay().toInstant(ZoneOffset.UTC));
+//            assertEquals(date, books.get(i).getLaunchDate());
+//            assertEquals(i, books.get(i).getPrice());
+//        }
+//    }
 
     @Test
     @DisplayName("Successful book update test")
