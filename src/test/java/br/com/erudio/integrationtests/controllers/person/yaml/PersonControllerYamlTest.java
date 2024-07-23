@@ -350,6 +350,51 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
                 .statusCode(403);
     }
 
+    @Test
+    @Order(8)
+    public void testHATEOS() throws JsonProcessingException, JsonProcessingException {
+        var content = given().spec(specification)
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfigs.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
+                .contentType(TestConfigs.CONTENT_TYPE_YML)
+                .accept(TestConfigs.CONTENT_TYPE_YML)
+                .queryParams("page", 3, "size", 10, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                //.as(new TypeRef<List<PersonVO>>() {});
+                .asString();
+
+        assertTrue(content.contains("rel: \"self\"\n    href: \"http://localhost:8888/api/person/v1/674\""));
+        assertTrue(content.contains("rel: \"self\"\n    href: \"http://localhost:8888/api/person/v1/411\""));
+        assertTrue(content.contains("rel: \"self\"\n    href: \"http://localhost:8888/api/person/v1/711\""));
+
+        assertTrue(content.contains("rel: \"first\"\n" +
+                "  href: \"http://localhost:8888/api/person/v1?direction=asc&page=0&size=10&sort=firstName,asc\""));
+        assertTrue(content.contains("rel: \"prev\"\n" +
+                "  href: \"http://localhost:8888/api/person/v1?direction=asc&page=2&size=10&sort=firstName,asc\""));
+        assertTrue(content.contains("rel: \"self\"\n" +
+                "  href: \"http://localhost:8888/api/person/v1?page=3&size=10&direction=asc\""));
+        assertTrue(content.contains("rel: \"next\"\n" +
+                "  href: \"http://localhost:8888/api/person/v1?direction=asc&page=4&size=10&sort=firstName,asc\""));
+        assertTrue(content.contains("rel: \"last\"\n" +
+                "  href: \"http://localhost:8888/api/person/v1?direction=asc&page=100&size=10&sort=firstName,asc\""));
+
+        assertTrue(content.contains("page:\n" +
+                "  size: 10\n" +
+                "  totalElements: 1004\n" +
+                "  totalPages: 101\n" +
+                "  number: 3"));
+    }
+
     private void mockPerson() {
         person.setFirstName("Nelson");
         person.setLastName("Piquet");
