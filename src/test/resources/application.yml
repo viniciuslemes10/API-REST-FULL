@@ -1,7 +1,7 @@
 server:
   port: 8888
 file:
-  upload-dir: /home/runner/work/API-REST-FULL/API-REST-FULL/UploadDirJava
+  upload-dir: /home/runner/work/API-REST-FULL/API-REST-FULL/target/UploadDirJava
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080,https://erudio.com.br
 security:
