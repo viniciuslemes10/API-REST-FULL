@@ -21,7 +21,7 @@ services: # Services do MySQL e Java
   rest-with-spring-boot-erudio:
     image: vinidesenvolvedor/rest-with-spring-boot-erudio #Nome do seu usuário do docker hub com o nome da aplicação
     restart: always
-    build: ./ #Caminho para encontrar o Dockerfile
+    build: . #Caminho para encontrar o Dockerfile
     working_dir: /app #Nome do diretório
     environment:
       TZ: America/Sao_Paulo
